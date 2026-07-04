@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulário Junino com Candy Crush</title>
+
+  <style type="text/css">
+    :root {
+      --fj-yellow: #ffdf42;
+      --fj-gold: #ff9f1c;
+      --fj-orange: #ff5a1f;
+      --fj-red: #d72638;
+      --fj-green: #119847;
+      --fj-blue: #1667ff;
+      --fj-navy: #101437;
+      --fj-purple: #7b2cff;
+      --fj-cream: #fff3c7;
+      --fj-cell: 58px;
+      --fj-gap: 8px;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: transparent;
+    }
+
+    body {
+      width: fit-content;
+      min-width: 0;
+      color: #fff;
+    }
+
+    .fj-standalone-holder {
+      width: fit-content;
+      min-height: 0;
+      display: block;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+    }
+
+    #article-wrapper h2 font,
+    #article-archive h2,
+    div#article-archive font,
+    #article-wrapper a,
+    div#article-archive a,
+    h2 font,
+    div#infos font {
+      color: #009c3b !important;
+      text-decoration: none;
+    }
+
+    #article-wrapper h2 font {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    #article-wrapper p.summary {
+      color: #555;
+    }
+
+    #blauw22,
+    div.form_boxes-9923 {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,.45), transparent 19%),
+        linear-gradient(115deg, #009c3b 0%, #17b84f 31%, #ffdf00 64%, #ff8b18 100%);
+    }
+
+    div.form_boxes-9923 {
+      box-sizing: content-box;
+      position: relative;
+      padding: 20px;
+      display: flex;
+      width: 512px;
+      height: 20px;
+      left: -11px;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.82);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.48),
+        inset 0 -18px 30px rgba(49,21,0,.16),
+        0 10px 26px rgba(0, 39, 118, .22),
+        0 0 18px rgba(255, 223, 0, .35);
+      isolation: isolate;
+    }
+
+    div.form_boxes-9923::before {
+      content: "";
+      position: absolute;
+      inset: -70% -30%;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(110deg, transparent 0 37%, rgba(255,255,255,.44) 47%, transparent 58%),
+        radial-gradient(circle, rgba(255,255,255,.58) 0 2px, transparent 3px) 0 0 / 30px 30px;
+      transform: translateX(-70%) rotate(7deg);
+      animation: fjFormShine 5.4s ease-in-out infinite;
+    }
+
+    div.form_boxes-9923::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      z-index: 0;
+      border-radius: 10px;
+      pointer-events: none;
+      border: 1px dashed rgba(255,255,255,.36);
+      opacity: .85;
+    }
+
+    @keyframes fjFormShine {
+      0%, 62% { transform: translateX(-78%) rotate(7deg); }
+      100% { transform: translateX(78%) rotate(7deg); }
+    }
+
+    div.form_boxes-9923 > div.container-title-desc {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    div.form_boxes-9923 > div.container-title-desc > span {
+      font-size: 13px;
+      color: #fff;
+      text-shadow: 0 2px 3px rgba(0,0,0,.56);
+      white-space: nowrap;
+    }
+
+    .fj-mini-desc {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px !important;
+      color: #ffffffcc !important;
+      letter-spacing: .1px;
+    }
+
+    .fj-mini-desc::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #fff7a6;
+      box-shadow: 0 0 10px #fff7a6, 0 0 16px rgba(255,255,255,.42);
+      animation: fjDot .8s ease-in-out infinite alternate;
+      flex: 0 0 auto;
+    }
+
+    @keyframes fjDot {
+      from { transform: scale(.85); opacity: .65; }
+      to { transform: scale(1.22); opacity: 1; }
+    }
+
+    .form_boxes-9923 .container-boxes {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+    }
+
+    .form_boxes-9923 form {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 0;
+    }
+
+    #rots {
+      position: relative;
+      transition: transform .2s ease, filter .2s ease;
+    }
+
+    #rots:hover {
+      transform: translateY(-3px);
+    }
+
+    div.article-body > div.article-body > div > a > div {
+      position: relative;
+      margin-top: 5px;
+    }
+
+    #article-wrapper {
+      position: relative;
+    }
+
+    .fj-play-button {
+      min-width: 152px;
+      height: 32px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      color: #2f1500;
+      font-weight: 950;
+      font-size: 12px;
+      letter-spacing: .45px;
+      text-transform: uppercase;
+      background:
+        radial-gradient(circle at 25% 19%, #fffbe4 0 14%, transparent 15%),
+        linear-gradient(180deg, #fff8b2 0%, #ffdf2f 43%, #ff9f1c 100%);
+      box-shadow:
+        inset 0 2px 2px rgba(255,255,255,.84),
+        inset 0 -3px 0 rgba(124, 53, 0, .25),
+        0 6px 15px rgba(56, 24, 0, .28),
+        0 0 18px rgba(255,255,255,.34);
+      text-shadow: 0 1px 0 rgba(255,255,255,.58);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .fj-play-button::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      border-radius: 50% 50% 50% 10%;
+      background: linear-gradient(145deg, #ff4c1c, #ffcf2e 65%, #fff9b6);
+      transform: rotate(-18deg);
+      box-shadow: 0 2px 4px rgba(0,0,0,.22);
+    }
+
+    .fj-play-button::after {
+      content: "▶";
+      width: 18px;
+      height: 18px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(180deg, #119847, #006b32);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,.45), 0 0 10px rgba(0,255,116,.42);
+      font-size: 9px;
+      padding-left: 1px;
+    }
+
+    .fj-hidden-frame {
+      width: 0;
+      height: 0;
+      border: 0;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .fj-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255, 223, 66, .30), transparent 30%),
+        radial-gradient(circle at 78% 18%, rgba(17, 152, 71, .28), transparent 28%),
+        rgba(4,6,23,.84);
+      backdrop-filter: blur(12px);
+    }
+
+    .fj-modal[hidden],
+    .fj-screen[hidden] {
+      display: none !important;
+    }
+
+    .fj-modal-shell {
+      position: relative;
+      width: min(98vw, 990px);
+      max-height: min(94vh, 870px);
+      overflow: auto;
+      border-radius: 30px;
+      isolation: isolate;
+      border: 1px solid rgba(255,243,199,.55);
+      background:
+        linear-gradient(180deg, rgba(255,245,195,.10), rgba(255,255,255,.02)),
+        radial-gradient(circle at 18% 9%, rgba(255,223,66,.23), transparent 25%),
+        radial-gradient(circle at 82% 12%, rgba(255,90,31,.20), transparent 25%),
+        linear-gradient(145deg, rgba(21,24,65,.98), rgba(47,17,63,.98));
+      box-shadow:
+        0 28px 80px rgba(0,0,0,.55),
+        0 0 0 8px rgba(255,223,66,.08),
+        inset 0 0 80px rgba(255,255,255,.05);
+    }
+
+    .fj-modal-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .22;
+      background:
+        repeating-linear-gradient(90deg, transparent 0 26px, rgba(255,255,255,.10) 26px 27px),
+        repeating-linear-gradient(0deg, transparent 0 26px, rgba(255,255,255,.08) 26px 27px);
+      mask-image: radial-gradient(circle at 50% 40%, black, transparent 85%);
+    }
+
+    .fj-flags {
+      position: sticky;
+      top: 0;
+      z-index: 7;
+      height: 42px;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: 30px 30px 0 0;
+      filter: drop-shadow(0 5px 5px rgba(0,0,0,.25));
+    }
+
+    .fj-flags svg {
+      width: 100%;
+      height: 58px;
+      display: block;
+    }
+
+    .fj-close {
+      position: sticky;
+      z-index: 10;
+      top: 10px;
+      float: right;
+      margin: 12px 12px 0 0;
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 900;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.05)),
+        rgba(215,38,56,.94);
+      box-shadow: 0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+
+    .fj-close:hover {
+      transform: scale(1.06) rotate(7deg);
+    }
+
+    .fj-screen {
+      padding: 20px clamp(16px, 3vw, 34px) 34px;
+    }
+
+    .fj-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 290px;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .fj-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(255,243,199,.4);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: #fff3c7;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.15);
+    }
+
+    .fj-title {
+      margin: 16px 0 8px;
+      color: #fff3c7;
+      font-size: clamp(32px, 7vw, 64px);
+      line-height: .92;
+      letter-spacing: -1.8px;
+      text-shadow:
+        0 4px 0 #8f2d0c,
+        0 13px 28px rgba(255,90,31,.52),
+        0 0 26px rgba(255,223,66,.32);
+    }
+
+    .fj-title span {
+      display: block;
+      color: #ffdf42;
+    }
+
+    .fj-subtitle {
+      max-width: 620px;
+      margin: 0 0 20px;
+      color: rgba(255,255,255,.82);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .fj-start-card,
+    .fj-panel,
+    .fj-gameover-card {
+      border: 1px solid rgba(255,243,199,.28);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05)),
+        rgba(0,0,0,.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 18px 38px rgba(0,0,0,.20);
+    }
+
+    .fj-start-card {
+      padding: 18px;
+      border-radius: 24px;
+    }
+
+    .fj-start-card label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff3c7;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    .fj-input-wrap {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .fj-input-wrap::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      transform: translateY(-50%);
+      z-index: 2;
+      border-radius: 50% 50% 42% 42%;
+      background: linear-gradient(145deg, #a85d22, #ffe0a2 52%, #7b3f15);
+      box-shadow: 0 2px 4px rgba(0,0,0,.22);
+    }
+
+    #fjNickInput {
+      width: 100%;
+      height: 48px;
+      border: 1px solid rgba(255,243,199,.55);
+      border-radius: 16px;
+      outline: none;
+      padding: 0 14px 0 42px;
+      color: #201000;
+      font-size: 15px;
+      font-weight: 900;
+      background: linear-gradient(180deg, #fff9dc, #ffeba4);
+      box-shadow: inset 0 2px 5px rgba(90,34,0,.25), 0 0 18px rgba(255,223,66,.18);
+      box-sizing: border-box;
+    }
+
+    .fj-primary,
+    .fj-secondary,
+    .fj-mini-button {
+      border: 0;
+      cursor: pointer;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      transition: transform .16s ease, filter .16s ease;
+    }
+
+    .fj-primary {
+      width: 100%;
+      min-height: 54px;
+      border-radius: 18px;
+      color: #331100;
+      font-size: 13px;
+      background:
+        radial-gradient(circle at 30% 15%, #fff8d1 0 12%, transparent 13%),
+        linear-gradient(180deg, #ffef74, #ffb21c 55%, #ff681f);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.65),
+        inset 0 -4px 0 rgba(125,42,0,.28),
+        0 14px 28px rgba(255,90,31,.32),
+        0 0 28px rgba(255,223,66,.22);
+      text-shadow: 0 1px 0 rgba(255,255,255,.45);
+    }
+
+    .fj-secondary {
+      min-height: 42px;
+      padding: 0 18px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 11px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.04)),
+        rgba(255,255,255,.10);
+      border: 1px solid rgba(255,243,199,.35);
+    }
+
+    .fj-mini-button {
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: #fff3c7;
+      font-size: 10px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,243,199,.24);
+    }
+
+    .fj-primary:hover,
+    .fj-secondary:hover,
+    .fj-mini-button:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: saturate(1.12);
+    }
+
+    .fj-rules {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .fj-rule {
+      padding: 10px;
+      border-radius: 16px;
+      color: rgba(255,255,255,.80);
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.10);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .fj-rule strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #ffdf42;
+      font-size: 12px;
+    }
+
+    .fj-mascot {
+      position: relative;
+      min-height: 330px;
+      display: grid;
+      place-items: center;
+      perspective: 800px;
+    }
+
+    .fj-mascot-body {
+      position: relative;
+      width: 225px;
+      height: 270px;
+      border-radius: 44% 44% 48% 48%;
+      background:
+        radial-gradient(circle at 35% 23%, rgba(255,255,255,.85), transparent 12%),
+        linear-gradient(150deg, #ffeb75 0%, #ffad1c 45%, #e85d04 100%);
+      box-shadow:
+        inset -22px -28px 38px rgba(116,38,0,.28),
+        inset 14px 12px 18px rgba(255,255,255,.23),
+        0 25px 55px rgba(0,0,0,.35),
+        0 0 45px rgba(255,223,66,.25);
+      animation: fjMascotDance 1.1s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    .fj-mascot-art {
+      position: absolute;
+      left: 50%;
+      top: 42px;
+      width: 130px;
+      height: 130px;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 9px 8px rgba(0,0,0,.25));
+      animation: fjIconBounce .75s ease-in-out infinite alternate;
+    }
+
+    .fj-mascot-art svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .fj-mascot-face {
+      position: absolute;
+      top: 110px;
+      left: 50%;
+      width: 88px;
+      height: 40px;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+
+    .fj-mascot-face::before,
+    .fj-mascot-face::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 15px;
+      height: 21px;
+      border-radius: 50%;
+      background: #421400;
+      box-shadow: inset 0 6px 0 rgba(255,255,255,.45);
+      animation: fjBlink 3.2s infinite;
+    }
+
+    .fj-mascot-face::before { left: 12px; }
+    .fj-mascot-face::after { right: 12px; }
+
+    .fj-mouth {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 34px;
+      height: 18px;
+      transform: translateX(-50%);
+      border-radius: 0 0 22px 22px;
+      background: #8a1a15;
+      box-shadow: inset 0 -5px 0 rgba(255,255,255,.20);
+    }
+
+    @keyframes fjMascotDance {
+      0% { transform: rotateY(-7deg) rotateZ(-2deg) translateY(0); }
+      100% { transform: rotateY(7deg) rotateZ(2deg) translateY(-10px); }
+    }
+
+    @keyframes fjIconBounce {
+      from { transform: translateX(-50%) translateY(0) rotate(-7deg); }
+      to { transform: translateX(-50%) translateY(-6px) rotate(6deg); }
+    }
+
+    @keyframes fjBlink {
+      0%, 92%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(.12); }
+    }
+
+    .fj-game-layout {
+      display: grid;
+      grid-template-columns: minmax(300px, max-content) minmax(240px, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .fj-game-top {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .fj-stat {
+      min-height: 70px;
+      padding: 12px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.06));
+      border: 1px solid rgba(255,243,199,.24);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 14px 25px rgba(0,0,0,.18);
+      box-sizing: border-box;
+    }
+
+    .fj-stat span {
+      display: block;
+      color: rgba(255,255,255,.65);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .fj-stat strong {
+      display: block;
+      margin-top: 4px;
+      color: #fff3c7;
+      font-size: clamp(20px, 3vw, 30px);
+      line-height: 1;
+      text-shadow: 0 4px 12px rgba(0,0,0,.28);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .fj-board-wrap {
+      position: relative;
+      padding: clamp(10px, 2vw, 16px);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04)),
+        linear-gradient(135deg, rgba(91,42,13,.92), rgba(42,17,42,.92));
+      border: 1px solid rgba(255,243,199,.38);
+      box-shadow:
+        inset 0 3px 0 rgba(255,255,255,.14),
+        inset 0 -12px 30px rgba(0,0,0,.25),
+        0 25px 55px rgba(0,0,0,.32),
+        0 0 40px rgba(255,90,31,.18);
+      overflow: hidden;
+      justify-self: center;
+      box-sizing: border-box;
+    }
+
+    .fj-board-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 22px;
+      opacity: .20;
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,.18) 0 7px, transparent 7px 14px);
+      pointer-events: none;
+    }
+
+    .fj-board {
+      position: relative;
+      z-index: 2;
+      width: calc((var(--fj-cell) * 8) + (var(--fj-gap) * 7));
+      height: calc((var(--fj-cell) * 8) + (var(--fj-gap) * 7));
+      touch-action: none;
+      user-select: none;
+      overflow: visible;
+    }
+
+    .fj-tile {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: var(--fj-cell);
+      height: var(--fj-cell);
+      border: 0;
+      border-radius: 18px;
+      cursor: grab;
+      padding: 0;
+      background:
+        radial-gradient(circle at 30% 18%, rgba(255,255,255,.85), rgba(255,255,255,.13) 20%, transparent 36%),
+        linear-gradient(145deg, #fff, #ddd);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.68),
+        inset 0 -7px 0 rgba(0,0,0,.16),
+        inset -5px -8px 16px rgba(0,0,0,.12),
+        0 8px 0 rgba(59,18,9,.38),
+        0 12px 18px rgba(0,0,0,.24);
+      transform: translate3d(0, 0, 0);
+      transition: transform .23s cubic-bezier(.2,.85,.18,1.08), opacity .18s ease, filter .16s ease, box-shadow .16s ease;
+      will-change: transform;
+      contain: layout paint;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .fj-tile::before {
+      content: "";
+      position: absolute;
+      inset: 5px 7px auto;
+      height: 24%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,.68), rgba(255,255,255,0));
+      pointer-events: none;
+      mix-blend-mode: screen;
+      z-index: 3;
+    }
+
+    .fj-tile:hover {
+      filter: brightness(1.08) saturate(1.1);
+    }
+
+    .fj-tile.selected {
+      z-index: 14;
+      outline: 3px solid #fff3c7;
+      outline-offset: 3px;
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.75),
+        inset 0 -7px 0 rgba(0,0,0,.16),
+        0 0 0 6px rgba(255,223,66,.28),
+        0 14px 20px rgba(0,0,0,.28),
+        0 0 28px rgba(255,223,66,.55);
+      animation: fjSelectGlow .42s ease-in-out infinite alternate;
+    }
+
+    .fj-tile.dragging {
+      z-index: 30;
+      cursor: grabbing;
+      transition: none !important;
+      filter: brightness(1.13) saturate(1.18);
+    }
+
+    .fj-tile.matched {
+      z-index: 22;
+      pointer-events: none;
+      animation: fjTilePop .36s ease-out forwards;
+    }
+
+    .fj-tile.wrong {
+      animation: fjWrong .22s ease-in-out 2;
+    }
+
+    .fj-piece-art {
+      position: absolute;
+      inset: 8%;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      filter: drop-shadow(0 7px 5px rgba(0,0,0,.28));
+      animation: fjPieceFloat 1.8s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .fj-piece-art svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .fj-tile.type-corn { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 18%), linear-gradient(145deg, #fff17b, #ffb900 54%, #e47b00); }
+    .fj-tile.type-fire { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 17%), linear-gradient(145deg, #ffb36b, #ff4c1c 55%, #9e1616); }
+    .fj-tile.type-flag { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 18%), linear-gradient(145deg, #70d6ff, #1667ff 58%, #183a9e); }
+    .fj-tile.type-balloon { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 18%), linear-gradient(145deg, #ff8bd1, #d726b7 56%, #74105d); }
+    .fj-tile.type-accordion { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 18%), linear-gradient(145deg, #c9ff7a, #119847 55%, #005a31); }
+    .fj-tile.type-hat { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 18%), linear-gradient(145deg, #ffe0a2, #a85d22 56%, #5d2b0e); }
+    .fj-tile.type-pamonha { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 18%), linear-gradient(145deg, #f8ffd7, #c7d66b 56%, #6c7c1f); }
+    .fj-tile.type-quadrilha { background: radial-gradient(circle at 25% 18%, rgba(255,255,255,.95), transparent 18%), linear-gradient(145deg, #e1c5ff, #7b2cff 58%, #34136d); }
+
+    @keyframes fjSelectGlow {
+      from { filter: brightness(1.02); }
+      to { filter: brightness(1.2); }
+    }
+
+    @keyframes fjTilePop {
+      0% { transform: translate3d(var(--tx), var(--ty), 0) scale(1) rotate(0); opacity: 1; filter: brightness(1); }
+      55% { transform: translate3d(var(--tx), var(--ty), 0) scale(1.26) rotate(7deg); opacity: 1; filter: brightness(1.45); }
+      100% { transform: translate3d(var(--tx), var(--ty), 0) scale(.04) rotate(24deg); opacity: 0; filter: brightness(2); }
+    }
+
+    @keyframes fjWrong {
+      0%, 100% { margin-left: 0; }
+      25% { margin-left: -6px; }
+      75% { margin-left: 6px; }
+    }
+
+    @keyframes fjPieceFloat {
+      from { transform: translateY(0) rotate(-1.8deg); }
+      to { transform: translateY(-2px) rotate(1.8deg); }
+    }
+
+    .fj-side {
+      display: grid;
+      gap: 12px;
+    }
+
+    .fj-panel {
+      padding: 16px;
+      border-radius: 24px;
+    }
+
+    .fj-panel h3 {
+      margin: 0 0 8px;
+      color: #ffdf42;
+      font-size: 17px;
+    }
+
+    .fj-panel p {
+      margin: 0;
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .fj-timebar {
+      position: relative;
+      height: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(0,0,0,.32);
+      border: 1px solid rgba(255,243,199,.28);
+      box-shadow: inset 0 2px 5px rgba(0,0,0,.32);
+    }
+
+    .fj-timebar-fill {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #119847, #ffdf42, #ff5a1f, #d72638);
+      box-shadow: 0 0 20px rgba(255,223,66,.45);
+      transition: width .35s ease;
+    }
+
+    .fj-comment {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .fj-comment::before {
+      content: "";
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background:
+        radial-gradient(circle at 36% 32%, #fff 0 9%, transparent 10%),
+        radial-gradient(circle at 64% 32%, #fff 0 9%, transparent 10%),
+        radial-gradient(circle at 50% 65%, #8a1a15 0 28%, transparent 29%),
+        linear-gradient(145deg, #ffdf42, #ff5a1f);
+      box-shadow: 0 5px 8px rgba(0,0,0,.22);
+    }
+
+    .fj-piece-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .fj-piece-chip {
+      display: grid;
+      place-items: center;
+      min-height: 46px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+
+    .fj-piece-chip svg {
+      width: 36px;
+      height: 36px;
+      filter: drop-shadow(0 4px 4px rgba(0,0,0,.24));
+    }
+
+    .fj-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .fj-toast-layer,
+    .fj-confetti-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 20;
+    }
+
+    .fj-float-score {
+      position: absolute;
+      z-index: 30;
+      color: #fff3c7;
+      font-weight: 1000;
+      font-size: 22px;
+      text-shadow:
+        0 3px 0 #9a3412,
+        0 8px 14px rgba(0,0,0,.35),
+        0 0 20px rgba(255,223,66,.65);
+      animation: fjScoreFloat .9s ease-out forwards;
+      white-space: nowrap;
+    }
+
+    @keyframes fjScoreFloat {
+      from { transform: translate(-50%, 10px) scale(.7) rotate(-4deg); opacity: 0; }
+      18% { opacity: 1; }
+      to { transform: translate(-50%, -68px) scale(1.2) rotate(4deg); opacity: 0; }
+    }
+
+    .fj-toast {
+      position: absolute;
+      left: 50%;
+      top: 16%;
+      transform: translateX(-50%);
+      padding: 11px 16px;
+      border-radius: 999px;
+      color: #371400;
+      font-weight: 1000;
+      font-size: 13px;
+      background: linear-gradient(180deg, #fff5be, #ffdf42);
+      box-shadow: 0 15px 30px rgba(0,0,0,.28), inset 0 2px 0 rgba(255,255,255,.55);
+      animation: fjToast .95s ease-out forwards;
+      white-space: nowrap;
+    }
+
+    @keyframes fjToast {
+      0% { opacity: 0; transform: translateX(-50%) translateY(18px) scale(.7); }
+      16% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.05); }
+      82% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-28px) scale(.92); }
+    }
+
+    .fj-confetti {
+      position: absolute;
+      top: -20px;
+      width: 11px;
+      height: 16px;
+      border-radius: 4px 4px 7px 7px;
+      animation: fjConfettiFall var(--duration, 1300ms) linear forwards;
+      opacity: .95;
+    }
+
+    @keyframes fjConfettiFall {
+      to {
+        transform: translate3d(var(--drift, 10px), 112vh, 0) rotate(720deg);
+        opacity: .2;
+      }
+    }
+
+    .fj-gameover-card {
+      width: min(100%, 660px);
+      margin: 0 auto;
+      text-align: center;
+      padding: clamp(20px, 4vw, 34px);
+      border-radius: 28px;
+      box-sizing: border-box;
+    }
+
+    .fj-gameover-card h2 {
+      margin: 10px 0;
+      color: #fff3c7;
+      font-size: clamp(32px, 7vw, 58px);
+      line-height: .94;
+      text-shadow:
+        0 4px 0 #8f2d0c,
+        0 12px 28px rgba(255,90,31,.45);
+    }
+
+    .fj-final-score {
+      margin: 18px auto;
+      width: fit-content;
+      min-width: min(100%, 280px);
+      padding: 14px 24px;
+      border-radius: 24px;
+      color: #351200;
+      font-size: clamp(34px, 9vw, 74px);
+      font-weight: 1000;
+      letter-spacing: -2px;
+      background:
+        radial-gradient(circle at 25% 18%, #fff9dc, transparent 18%),
+        linear-gradient(180deg, #fff176, #ffae1a);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.7),
+        inset 0 -8px 0 rgba(124,53,0,.22),
+        0 22px 42px rgba(0,0,0,.27),
+        0 0 42px rgba(255,223,66,.28);
+    }
+
+    .fj-submit-status {
+      min-height: 23px;
+      color: rgba(255,255,255,.76);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .fj-ranking-mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .fj-ranking-mini div {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+
+    .fj-ranking-mini span {
+      display: block;
+      color: rgba(255,255,255,.58);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .fj-ranking-mini strong {
+      display: block;
+      margin-top: 4px;
+      color: #ffdf42;
+      font-size: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .fj-footer-note {
+      margin-top: 12px;
+      color: rgba(255,255,255,.48);
+      font-size: 11px;
+    }
+
+    @media (max-width: 780px) {
+      .fj-standalone-holder {
+        padding-inline: 0;
+      }
+
+      div.form_boxes-9923 {
+        width: min(512px, calc(100vw - 64px));
+        left: 0;
+        height: auto;
+        min-height: 20px;
+        gap: 10px;
+        padding: 16px;
+      }
+
+      .fj-play-button {
+        min-width: 126px;
+        height: 34px;
+      }
+
+      .fj-hero,
+      .fj-game-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .fj-mascot {
+        min-height: 230px;
+        order: -1;
+        transform: scale(.78);
+        margin-bottom: -34px;
+      }
+
+      .fj-game-top,
+      .fj-ranking-mini {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .fj-side {
+        order: 2;
+      }
+
+      .fj-rules {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 460px) {
+      :root {
+        --fj-cell: 37px;
+        --fj-gap: 5px;
+      }
+
+      .fj-modal {
+        padding: 8px;
+      }
+
+      .fj-modal-shell {
+        border-radius: 22px;
+      }
+
+      .fj-screen {
+        padding-inline: 10px;
+      }
+
+      .fj-tile {
+        border-radius: 13px;
+      }
+
+      div.form_boxes-9923 > div.container-title-desc > span:first-child {
+        font-size: 11px;
+      }
+
+      div.form_boxes-9923 > div.container-title-desc > span:last-child {
+        font-size: 9px !important;
+      }
+
+      .fj-play-button {
+        min-width: 116px;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="fj-standalone-holder">
+    <div class="form_boxes-9923">
+      <div class="container-title-desc">
+        <span style="font-weight: bolder;">Enviar Participação</span>
+        <span class="fj-mini-desc">Clique para jogar e enviar seu score</span>
+      </div>
+
+      <div class="container-boxes">
+        <form id="fjScoreForm"
+          action="https://panel.hlive.ovh/formbuilder/send/131"
+          method="post"
+          target="fjSubmitFrame"
+          style="display: flex; align-items: center; gap:5px;">
+
+          <input id="fjHiddenNick" name="campo[0]" type="hidden" value="" />
+          <input id="fjHiddenScore" name="campo[1]" type="hidden" value="" />
+
+          <button type="button" id="rots" class="fj-play-button" title="Jogar agora">
+            Jogar agora
+          </button>
+        </form>
+        <iframe class="fj-hidden-frame" name="fjSubmitFrame" title="Envio da pontuação"></iframe>
+      </div>
+    </div>
+  </main>
+
+  <div id="fjGameModal" class="fj-modal" hidden>
+    <section class="fj-modal-shell" role="dialog" aria-modal="true" aria-labelledby="fjGameTitle">
+      <div class="fj-flags" aria-hidden="true">
+        <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+          <path d="M0 22 C180 48 300 6 480 28 S820 54 1200 18" fill="none" stroke="#fff3c7" stroke-width="4" opacity=".85"/>
+          <g transform="translate(30 26)"><path d="M0 0 L38 0 L19 34 Z" fill="#ffdf42"/><path d="M58 -5 L96 -5 L77 29 Z" fill="#d72638"/><path d="M116 -3 L154 -3 L135 31 Z" fill="#119847"/><path d="M174 -8 L212 -8 L193 26 Z" fill="#1667ff"/></g>
+          <g transform="translate(250 20)"><path d="M0 0 L38 0 L19 34 Z" fill="#ff8b18"/><path d="M58 6 L96 6 L77 40 Z" fill="#119847"/><path d="M116 2 L154 2 L135 36 Z" fill="#ffdf42"/><path d="M174 7 L212 7 L193 41 Z" fill="#d72638"/></g>
+          <g transform="translate(470 28)"><path d="M0 0 L38 0 L19 34 Z" fill="#1667ff"/><path d="M58 -3 L96 -3 L77 31 Z" fill="#ffdf42"/><path d="M116 2 L154 2 L135 36 Z" fill="#d72638"/><path d="M174 -4 L212 -4 L193 30 Z" fill="#119847"/></g>
+          <g transform="translate(690 22)"><path d="M0 0 L38 0 L19 34 Z" fill="#ff8b18"/><path d="M58 5 L96 5 L77 39 Z" fill="#1667ff"/><path d="M116 4 L154 4 L135 38 Z" fill="#119847"/><path d="M174 -4 L212 -4 L193 30 Z" fill="#ffdf42"/></g>
+          <g transform="translate(910 24)"><path d="M0 0 L38 0 L19 34 Z" fill="#d72638"/><path d="M58 -6 L96 -6 L77 28 Z" fill="#119847"/><path d="M116 -2 L154 -2 L135 32 Z" fill="#1667ff"/><path d="M174 -5 L212 -5 L193 29 Z" fill="#ff8b18"/></g>
+        </svg>
+      </div>
+
+      <button type="button" class="fj-close" id="fjCloseGame" aria-label="Fechar jogo">×</button>
+      <div class="fj-toast-layer" id="fjToastLayer"></div>
+      <div class="fj-confetti-layer" id="fjConfettiLayer"></div>
+
+      <div class="fj-screen" id="fjWelcomeScreen">
+        <div class="fj-hero">
+          <div>
+            <span class="fj-kicker">Festa Junina Match-3</span>
+            <h1 class="fj-title" id="fjGameTitle">Candy Crush <span>do Arraiá</span></h1>
+            <p class="fj-subtitle">
+              Arraste as peças juninas para formar trios, fazer combos e somar o maior score antes do tempo acabar.
+              Quando a partida termina, o nick e a pontuação são enviados automaticamente.
+            </p>
+
+            <div class="fj-start-card">
+              <label for="fjNickInput">Seu nick no arraiá</label>
+              <div class="fj-input-wrap">
+                <input id="fjNickInput" type="text" maxlength="24" placeholder="Digite seu nick" autocomplete="nickname" />
+              </div>
+              <button type="button" class="fj-primary" id="fjStartGame">Começar o arrasta-pé</button>
+
+              <div class="fj-rules">
+                <div class="fj-rule"><strong>3 peças</strong>Remove do tabuleiro e soma pontos.</div>
+                <div class="fj-rule"><strong>4 peças</strong>Explode vizinhos com efeito junino.</div>
+                <div class="fj-rule"><strong>5+ peças</strong>Limpa linha e coluna em modo quadrilha.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fj-mascot" aria-hidden="true">
+            <div class="fj-mascot-body">
+              <div class="fj-mascot-art" id="fjMascotArt"></div>
+              <div class="fj-mascot-face"><div class="fj-mouth"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fj-screen" id="fjGameScreen" hidden>
+        <div class="fj-game-layout">
+          <div class="fj-game-top">
+            <div class="fj-stat"><span>Nick</span><strong id="fjNickStat">---</strong></div>
+            <div class="fj-stat"><span>Pontos</span><strong id="fjScoreStat">0</strong></div>
+            <div class="fj-stat"><span>Tempo</span><strong id="fjTimeStat">75s</strong></div>
+            <div class="fj-stat"><span>Combo</span><strong id="fjComboStat">x1</strong></div>
+          </div>
+
+          <div class="fj-board-wrap">
+            <div class="fj-board" id="fjBoard" aria-label="Tabuleiro do Candy Crush Junino"></div>
+          </div>
+
+          <aside class="fj-side">
+            <div class="fj-panel">
+              <h3>Relógio da fogueira</h3>
+              <div class="fj-timebar" aria-hidden="true">
+                <div class="fj-timebar-fill" id="fjTimeFill"></div>
+              </div>
+              <p style="margin-top: 10px;">Arraste para trocar peças vizinhas. Se não formar trio, a troca volta sozinha.</p>
+            </div>
+
+            <div class="fj-panel fj-comment" id="fjComment">Escolha as peças e faça o arraial tremer!</div>
+
+            <div class="fj-panel">
+              <h3>Peças juninas</h3>
+              <p>As peças agora são ilustrações SVG embutidas, estáveis e sempre visíveis.</p>
+              <div class="fj-piece-list" id="fjPieceList"></div>
+              <div class="fj-actions-row">
+                <button type="button" class="fj-mini-button" id="fjSoundToggle">Som: ligado</button>
+                <button type="button" class="fj-mini-button" id="fjShuffle">Misturar</button>
+                <button type="button" class="fj-mini-button" id="fjGiveUp">Encerrar e enviar</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="fj-screen" id="fjGameOverScreen" hidden>
+        <div class="fj-gameover-card">
+          <span class="fj-kicker">Resultado do Arraiá</span>
+          <h2 id="fjGameOverTitle">Fim da quadrilha!</h2>
+          <p id="fjGameOverReason" class="fj-subtitle" style="margin-inline: auto;">O tempo acabou e a pontuação foi enviada.</p>
+
+          <div class="fj-final-score" id="fjFinalScore">0</div>
+          <div class="fj-submit-status" id="fjSubmitStatus">Enviando pontuação...</div>
+
+          <div class="fj-ranking-mini">
+            <div><span>Nick</span><strong id="fjFinalNick">---</strong></div>
+            <div><span>Melhor local</span><strong id="fjBestScore">0</strong></div>
+            <div><span>Maior combo</span><strong id="fjFinalCombo">x1</strong></div>
+          </div>
+
+          <div class="fj-actions-row" style="justify-content: center;">
+            <button type="button" class="fj-primary" id="fjPlayAgain" style="width: auto; padding: 0 28px;">Jogar de novo</button>
+            <button type="button" class="fj-secondary" id="fjCloseAfterGame">Fechar</button>
+          </div>
+
+          <p class="fj-footer-note">Campos enviados: campo[0] = nick, campo[1] = score.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const SIZE = 8;
+      const GAME_SECONDS = 75;
+      const STORAGE_NICK = "fjCandyNickV2";
+      const STORAGE_BEST = "fjCandyBestScoreV2";
+
+      const art = {
+        corn: '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M27 75C18 61 17 42 28 28c7-10 17-15 29-16 13 10 19 22 18 38-1 18-12 33-29 39-7-1-14-5-19-14Z" fill="#1c8f45"/><path d="M72 77c9-14 9-34-2-49-7-10-17-15-29-16-13 10-19 22-18 38 1 18 12 33 29 39 7-1 15-5 20-12Z" fill="#35b85d"/><ellipse cx="50" cy="49" rx="22" ry="38" fill="#ffd63d"/><path d="M35 31c9-7 22-8 32 0" stroke="#fff4a0" stroke-width="5" stroke-linecap="round" opacity=".8"/><g fill="#e99a13"><circle cx="42" cy="29" r="4"/><circle cx="54" cy="29" r="4"/><circle cx="48" cy="40" r="4"/><circle cx="60" cy="42" r="4"/><circle cx="40" cy="52" r="4"/><circle cx="53" cy="55" r="4"/><circle cx="46" cy="68" r="4"/><circle cx="59" cy="68" r="4"/></g><path d="M29 78c11-8 18-17 21-29 4 14 12 24 23 29-15 13-30 13-44 0Z" fill="#238a44" opacity=".95"/></svg>',
+        fire: '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 78l58-34 7 12-58 34Z" fill="#743513"/><path d="M80 78L22 44l-7 12 58 34Z" fill="#8b4519"/><path d="M50 11c9 13-2 19 10 31 7 7 11 15 10 24-2 16-15 25-30 23-14-2-24-13-24-27 0-13 9-23 18-33 6 13 14 6 16-18Z" fill="#e02626"/><path d="M51 27c6 9-3 15 7 24 5 5 7 12 5 20-3 10-12 16-22 13-9-3-15-11-14-21 0-9 6-16 13-24 4 9 9 6 11-12Z" fill="#ff8b18"/><path d="M49 46c5 7-2 12 4 18 3 4 4 9 1 14-4 6-13 6-17 0-4-7 0-14 7-21 2 5 4 3 5-11Z" fill="#fff083"/></svg>',
+        flag: '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M12 28c22 18 52 18 76 0" fill="none" stroke="#fff7cf" stroke-width="5" stroke-linecap="round"/><path d="M19 31h18l-9 24Z" fill="#ffdf42"/><path d="M41 38h18l-9 24Z" fill="#d72638"/><path d="M62 36h18l-9 24Z" fill="#119847"/><path d="M27 59c11 9 29 9 45 0" fill="none" stroke="#fff7cf" stroke-width="4" stroke-linecap="round" opacity=".75"/><path d="M31 60h17l-8 23Z" fill="#1667ff"/><path d="M54 63h17l-8 23Z" fill="#ff8b18"/></svg>',
+        balloon: '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8l28 23-8 43-20 18-20-18-8-43Z" fill="#d726b7"/><path d="M50 8l10 26-10 58-10-58Z" fill="#ffdf42" opacity=".95"/><path d="M22 31h56L50 8Z" fill="#ff8bd1"/><path d="M30 74h40L50 92Z" fill="#8f115f"/><path d="M50 8v84M22 31h56M30 74h40" stroke="#fff7cf" stroke-width="3" opacity=".68"/><path d="M38 84h24l-5 10H43Z" fill="#71300b"/></svg>',
+        accordion: '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="13" y="25" width="22" height="50" rx="8" fill="#d72638"/><rect x="65" y="25" width="22" height="50" rx="8" fill="#1667ff"/><path d="M35 29h30v42H35Z" fill="#fff3c7"/><path d="M39 31l6 40M49 31l6 40M59 31l-6 40" stroke="#7b3f15" stroke-width="4" opacity=".55"/><g fill="#fff3c7"><circle cx="24" cy="39" r="4"/><circle cx="24" cy="51" r="4"/><circle cx="24" cy="63" r="4"/><circle cx="76" cy="39" r="4"/><circle cx="76" cy="51" r="4"/><circle cx="76" cy="63" r="4"/></g><rect x="10" y="70" width="80" height="8" rx="4" fill="#119847" opacity=".75"/></svg>',
+        hat: '<svg viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="72" rx="42" ry="13" fill="#c48736"/><path d="M30 68c4-31 10-48 20-48s16 17 20 48c-13 7-27 7-40 0Z" fill="#e5b96d"/><path d="M31 58c12 7 26 7 38 0l3 12c-14 9-30 9-44 0Z" fill="#7c3f12"/><path d="M34 42c11 5 22 5 33 0" fill="none" stroke="#fff2b6" stroke-width="5" stroke-linecap="round" opacity=".6"/><path d="M17 72c22 12 44 12 66 0" fill="none" stroke="#7c3f12" stroke-width="4" opacity=".35"/></svg>',
+        pamonha: '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M25 19c18 9 35 9 50 0 6 23 3 48-25 70C22 67 19 42 25 19Z" fill="#4caf50"/><path d="M50 15c9 18 11 46 0 74C39 61 41 33 50 15Z" fill="#c6d96b"/><path d="M25 19c11 19 20 43 25 70M75 19C64 38 55 62 50 89" fill="none" stroke="#2f7d32" stroke-width="4" opacity=".55"/><path d="M25 48c14 8 35 8 50 0" stroke="#fff3c7" stroke-width="7" stroke-linecap="round"/><path d="M34 47l32 7" stroke="#8b4519" stroke-width="3" stroke-linecap="round"/></svg>',
+        quadrilha: '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="17" r="10" fill="#ffd2a3"/><path d="M37 27h26l8 28H29Z" fill="#ffdf42"/><path d="M30 52c14 10 26 10 40 0l13 35H17Z" fill="#d72638"/><path d="M20 68c18 10 42 10 60 0" fill="none" stroke="#fff3c7" stroke-width="5" stroke-linecap="round"/><path d="M33 44l-17 12M67 44l17 12" stroke="#ffd2a3" stroke-width="7" stroke-linecap="round"/><path d="M39 14c6-10 16-10 22 0-6 4-16 4-22 0Z" fill="#3b1608"/><circle cx="38" cy="71" r="5" fill="#ffdf42"/><circle cx="62" cy="71" r="5" fill="#119847"/></svg>'
+      };
+
+      const pieces = [
+        { key: "corn", label: "Milho", svg: art.corn },
+        { key: "fire", label: "Fogueira", svg: art.fire },
+        { key: "flag", label: "Bandeirinhas", svg: art.flag },
+        { key: "balloon", label: "Balão", svg: art.balloon },
+        { key: "accordion", label: "Sanfona", svg: art.accordion },
+        { key: "hat", label: "Chapéu", svg: art.hat },
+        { key: "pamonha", label: "Pamonha", svg: art.pamonha },
+        { key: "quadrilha", label: "Quadrilha", svg: art.quadrilha }
+      ];
+
+      const comments = [
+        "Eita trem bão! Troca certeira!",
+        "Olha a chuva de pontos!",
+        "A sanfona chorou bonito nesse combo!",
+        "Pula fogueira! Isso aí explodiu!",
+        "Arraiá pegando fogo!",
+        "Combo arretado demais da conta!",
+        "Segura esse balão antes que suba!",
+        "A quadrilha girou e limpou o tabuleiro!"
+      ];
+
+      const $ = (selector, scope) => (scope || document).querySelector(selector);
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+      const els = {
+        launcher: $("#rots"),
+        modal: $("#fjGameModal"),
+        close: $("#fjCloseGame"),
+        welcome: $("#fjWelcomeScreen"),
+        game: $("#fjGameScreen"),
+        over: $("#fjGameOverScreen"),
+        nickInput: $("#fjNickInput"),
+        start: $("#fjStartGame"),
+        board: $("#fjBoard"),
+        pieceList: $("#fjPieceList"),
+        mascotArt: $("#fjMascotArt"),
+        score: $("#fjScoreStat"),
+        nick: $("#fjNickStat"),
+        time: $("#fjTimeStat"),
+        combo: $("#fjComboStat"),
+        timeFill: $("#fjTimeFill"),
+        comment: $("#fjComment"),
+        toastLayer: $("#fjToastLayer"),
+        confettiLayer: $("#fjConfettiLayer"),
+        soundToggle: $("#fjSoundToggle"),
+        shuffle: $("#fjShuffle"),
+        giveUp: $("#fjGiveUp"),
+        finalScore: $("#fjFinalScore"),
+        finalNick: $("#fjFinalNick"),
+        finalCombo: $("#fjFinalCombo"),
+        bestScore: $("#fjBestScore"),
+        gameOverTitle: $("#fjGameOverTitle"),
+        gameOverReason: $("#fjGameOverReason"),
+        submitStatus: $("#fjSubmitStatus"),
+        playAgain: $("#fjPlayAgain"),
+        closeAfterGame: $("#fjCloseAfterGame"),
+        form: $("#fjScoreForm"),
+        hiddenNick: $("#fjHiddenNick"),
+        hiddenScore: $("#fjHiddenScore")
+      };
+
+      const state = {
+        cells: [],
+        nodes: new Map(),
+        selected: null,
+        drag: null,
+        locked: false,
+        started: false,
+        submitted: false,
+        score: 0,
+        timeLeft: GAME_SECONDS,
+        moves: 0,
+        comboNow: 1,
+        maxCombo: 1,
+        nick: "",
+        timer: null,
+        idCounter: 1,
+        sound: true,
+        audio: null,
+        musicTimer: null
+      };
+
+      function safeLocalGet(key, fallback) {
+        try {
+          return localStorage.getItem(key) || fallback;
+        } catch (_) {
+          return fallback;
+        }
+      }
+
+      function safeLocalSet(key, value) {
+        try {
+          localStorage.setItem(key, value);
+        } catch (_) {}
+      }
+
+      function randomPieceIndex() {
+        return Math.floor(Math.random() * pieces.length);
+      }
+
+      function newTile(typeIndex) {
+        return {
+          id: state.idCounter++,
+          type: typeof typeIndex === "number" ? typeIndex : randomPieceIndex(),
+          r: 0,
+          c: 0,
+          spawnFrom: null
+        };
+      }
+
+      function isInside(r, c) {
+        return r >= 0 && r < SIZE && c >= 0 && c < SIZE;
+      }
+
+      function isAdjacent(a, b) {
+        return Math.abs(a.r - b.r) + Math.abs(a.c - b.c) === 1;
+      }
+
+      function metrics() {
+        const styles = getComputedStyle(els.board);
+        const cell = parseFloat(styles.getPropertyValue("--fj-cell")) || 58;
+        const gap = parseFloat(styles.getPropertyValue("--fj-gap")) || 8;
+        return { cell, gap, step: cell + gap };
+      }
+
+      function tileX(c) {
+        return c * metrics().step;
+      }
+
+      function tileY(r) {
+        return r * metrics().step;
+      }
+
+      function setNodePosition(node, r, c, scale) {
+        const x = tileX(c);
+        const y = tileY(r);
+        node.style.setProperty("--tx", x + "px");
+        node.style.setProperty("--ty", y + "px");
+        node.style.transform = "translate3d(" + x + "px," + y + "px,0)" + (scale ? " scale(" + scale + ")" : "");
+      }
+
+      function findPositionById(id) {
+        for (let r = 0; r < SIZE; r++) {
+          for (let c = 0; c < SIZE; c++) {
+            const tile = state.cells[r] && state.cells[r][c];
+            if (tile && tile.id === id) return { r, c, tile };
+          }
+        }
+        return null;
+      }
+
+      function clearBoardDom() {
+        state.nodes.forEach((node) => node.remove());
+        state.nodes.clear();
+        els.board.innerHTML = "";
+      }
+
+      function createTileNode(tile) {
+        const node = document.createElement("button");
+        node.type = "button";
+        node.className = "fj-tile";
+        node.dataset.id = String(tile.id);
+        node.addEventListener("pointerdown", handlePointerDown);
+        node.addEventListener("pointermove", handlePointerMove);
+        node.addEventListener("pointerup", handlePointerUp);
+        node.addEventListener("pointercancel", handlePointerCancel);
+        return node;
+      }
+
+      function applyTileVisual(node, tile) {
+        const piece = pieces[tile.type];
+        if (node.dataset.typeKey === piece.key) {
+          node.setAttribute("aria-label", piece.label + ", linha " + (tile.r + 1) + ", coluna " + (tile.c + 1));
+          return;
+        }
+        pieces.forEach((item) => node.classList.remove("type-" + item.key));
+        node.classList.add("type-" + piece.key);
+        node.dataset.typeKey = piece.key;
+        node.setAttribute("aria-label", piece.label + ", linha " + (tile.r + 1) + ", coluna " + (tile.c + 1));
+        node.innerHTML = '<span class="fj-piece-art">' + piece.svg + '</span>';
+      }
+
+      function syncBoard() {
+        const active = new Set();
+
+        for (let r = 0; r < SIZE; r++) {
+          for (let c = 0; c < SIZE; c++) {
+            const tile = state.cells[r][c];
+            if (!tile) continue;
+
+            tile.r = r;
+            tile.c = c;
+            active.add(tile.id);
+
+            let node = state.nodes.get(tile.id);
+            const isNew = !node;
+            if (isNew) {
+              node = createTileNode(tile);
+              state.nodes.set(tile.id, node);
+              node.style.opacity = "0";
+              node.style.transition = "none";
+              const startRow = typeof tile.spawnFrom === "number" ? tile.spawnFrom : r;
+              setNodePosition(node, startRow, c, .88);
+              els.board.appendChild(node);
+              node.offsetWidth;
+            }
+
+            applyTileVisual(node, tile);
+            node.dataset.r = String(r);
+            node.dataset.c = String(c);
+
+            if (isNew) {
+              requestAnimationFrame(() => {
+                node.style.transition = "";
+                node.style.opacity = "1";
+                setNodePosition(node, r, c);
+              });
+              tile.spawnFrom = null;
+            } else if (!node.classList.contains("dragging")) {
+              setNodePosition(node, r, c);
+            }
+          }
+        }
+
+        state.nodes.forEach((node, id) => {
+          if (!active.has(id)) {
+            node.remove();
+            state.nodes.delete(id);
+          }
+        });
+
+        updateSelectionClass();
+      }
+
+      function updateSelectionClass() {
+        state.nodes.forEach((node) => node.classList.remove("selected"));
+        if (!state.selected) return;
+        const tile = state.cells[state.selected.r] && state.cells[state.selected.r][state.selected.c];
+        if (tile) {
+          const node = state.nodes.get(tile.id);
+          if (node) node.classList.add("selected");
+        }
+      }
+
+      function getTileType(r, c) {
+        const tile = state.cells[r] && state.cells[r][c];
+        return tile ? tile.type : null;
+      }
+
+      function makeBoard() {
+        clearBoardDom();
+        state.cells = [];
+        let attempts = 0;
+
+        do {
+          state.cells = [];
+          for (let r = 0; r < SIZE; r++) {
+            state.cells[r] = [];
+            for (let c = 0; c < SIZE; c++) {
+              let type;
+              let guard = 0;
+              do {
+                type = randomPieceIndex();
+                guard++;
+              } while (
+                guard < 80 &&
+                ((c >= 2 && state.cells[r][c - 1].type === type && state.cells[r][c - 2].type === type) ||
+                (r >= 2 && state.cells[r - 1][c].type === type && state.cells[r - 2][c].type === type))
+              );
+              const tile = newTile(type);
+              tile.r = r;
+              tile.c = c;
+              state.cells[r][c] = tile;
+            }
+          }
+          attempts++;
+        } while ((!hasPossibleMove() || findMatches().positions.size > 0) && attempts < 80);
+      }
+
+      function swapCells(a, b) {
+        const tileA = state.cells[a.r][a.c];
+        const tileB = state.cells[b.r][b.c];
+        state.cells[a.r][a.c] = tileB;
+        state.cells[b.r][b.c] = tileA;
+        if (tileA) {
+          tileA.r = b.r;
+          tileA.c = b.c;
+        }
+        if (tileB) {
+          tileB.r = a.r;
+          tileB.c = a.c;
+        }
+      }
+
+      function handlePointerDown(event) {
+        if (state.locked || !state.started || event.button > 0) return;
+        const node = event.currentTarget;
+        const id = Number(node.dataset.id);
+        const pos = findPositionById(id);
+        if (!pos) return;
+
+        const m = metrics();
+        state.drag = {
+          id,
+          r: pos.r,
+          c: pos.c,
+          startX: event.clientX,
+          startY: event.clientY,
+          baseX: pos.c * m.step,
+          baseY: pos.r * m.step,
+          pointerId: event.pointerId
+        };
+        node.classList.add("dragging");
+        try { node.setPointerCapture(event.pointerId); } catch (_) {}
+      }
+
+      function handlePointerMove(event) {
+        const drag = state.drag;
+        if (!drag || Number(event.currentTarget.dataset.id) !== drag.id || state.locked) return;
+
+        const node = event.currentTarget;
+        const m = metrics();
+        let dx = event.clientX - drag.startX;
+        let dy = event.clientY - drag.startY;
+        if (Math.abs(dx) + Math.abs(dy) < 3) return;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+          dx = Math.max(-m.step * .92, Math.min(m.step * .92, dx));
+          dy = 0;
+        } else {
+          dy = Math.max(-m.step * .92, Math.min(m.step * .92, dy));
+          dx = 0;
+        }
+
+        const x = drag.baseX + dx;
+        const y = drag.baseY + dy;
+        node.style.setProperty("--tx", x + "px");
+        node.style.setProperty("--ty", y + "px");
+        node.style.transform = "translate3d(" + x + "px," + y + "px,0) scale(1.06)";
+      }
+
+      function handlePointerUp(event) {
+        const drag = state.drag;
+        if (!drag || Number(event.currentTarget.dataset.id) !== drag.id) return;
+        const node = event.currentTarget;
+        state.drag = null;
+        node.classList.remove("dragging");
+        try { node.releasePointerCapture(drag.pointerId); } catch (_) {}
+
+        const dx = event.clientX - drag.startX;
+        const dy = event.clientY - drag.startY;
+        const movedEnough = Math.max(Math.abs(dx), Math.abs(dy)) > 24;
+
+        if (movedEnough) {
+          const target = { r: drag.r, c: drag.c };
+          if (Math.abs(dx) > Math.abs(dy)) target.c += dx > 0 ? 1 : -1;
+          else target.r += dy > 0 ? 1 : -1;
+
+          if (isInside(target.r, target.c)) {
+            attemptSwap({ r: drag.r, c: drag.c }, target);
+          } else {
+            syncBoard();
+          }
+        } else {
+          syncBoard();
+          handleTileTap(drag.r, drag.c);
+        }
+      }
+
+      function handlePointerCancel(event) {
+        const drag = state.drag;
+        if (!drag || Number(event.currentTarget.dataset.id) !== drag.id) return;
+        state.drag = null;
+        event.currentTarget.classList.remove("dragging");
+        syncBoard();
+      }
+
+      function handleTileTap(r, c) {
+        if (state.locked || !state.started) return;
+
+        if (!state.selected) {
+          state.selected = { r, c };
+          updateSelectionClass();
+          playSound("select");
+          return;
+        }
+
+        const first = state.selected;
+        const second = { r, c };
+
+        if (first.r === second.r && first.c === second.c) {
+          state.selected = null;
+          updateSelectionClass();
+          return;
+        }
+
+        if (!isAdjacent(first, second)) {
+          state.selected = second;
+          updateSelectionClass();
+          playSound("select");
+          return;
+        }
+
+        attemptSwap(first, second);
+      }
+
+      async function attemptSwap(a, b) {
+        if (state.locked || !state.started || !isInside(a.r, a.c) || !isInside(b.r, b.c)) return;
+        state.locked = true;
+        state.selected = null;
+        updateSelectionClass();
+
+        swapCells(a, b);
+        playSound("swap");
+        syncBoard();
+        await delay(250);
+
+        const matchData = findMatches();
+        if (!matchData.positions.size) {
+          markWrong(a, b);
+          playSound("bad");
+          setComment("Opa! Essa troca não formou trio e voltou.");
+          await delay(230);
+          swapCells(a, b);
+          syncBoard();
+          await delay(250);
+          clearClassFromNodes("wrong");
+          state.locked = false;
+          return;
+        }
+
+        state.moves++;
+        await resolveBoard();
+        state.locked = false;
+      }
+
+      function markWrong(a, b) {
+        [a, b].forEach((pos) => {
+          const tile = state.cells[pos.r] && state.cells[pos.r][pos.c];
+          const node = tile ? state.nodes.get(tile.id) : null;
+          if (node) node.classList.add("wrong");
+        });
+      }
+
+      function clearClassFromNodes(className) {
+        state.nodes.forEach((node) => node.classList.remove(className));
+      }
+
+      function addGroup(groups, set, positions) {
+        groups.push(positions);
+        positions.forEach((pos) => set.add(pos.r + "," + pos.c));
+      }
+
+      function findMatches() {
+        const groups = [];
+        const positions = new Set();
+
+        for (let r = 0; r < SIZE; r++) {
+          let start = 0;
+          for (let c = 1; c <= SIZE; c++) {
+            const current = c < SIZE ? getTileType(r, c) : null;
+            const previous = getTileType(r, c - 1);
+            if (current !== previous || current === null) {
+              const len = c - start;
+              if (previous !== null && len >= 3) {
+                const group = [];
+                for (let x = start; x < c; x++) group.push({ r, c: x });
+                addGroup(groups, positions, group);
+              }
+              start = c;
+            }
+          }
+        }
+
+        for (let c = 0; c < SIZE; c++) {
+          let start = 0;
+          for (let r = 1; r <= SIZE; r++) {
+            const current = r < SIZE ? getTileType(r, c) : null;
+            const previous = getTileType(r - 1, c);
+            if (current !== previous || current === null) {
+              const len = r - start;
+              if (previous !== null && len >= 3) {
+                const group = [];
+                for (let y = start; y < r; y++) group.push({ r: y, c });
+                addGroup(groups, positions, group);
+              }
+              start = r;
+            }
+          }
+        }
+
+        return { groups, positions };
+      }
+
+      function expandSpecialMatches(matchData) {
+        const set = new Set(matchData.positions);
+        let special = false;
+        let biggest = 3;
+
+        matchData.groups.forEach((group) => {
+          biggest = Math.max(biggest, group.length);
+          const center = group[Math.floor(group.length / 2)];
+
+          if (group.length >= 4) {
+            special = true;
+            for (let dr = -1; dr <= 1; dr++) {
+              for (let dc = -1; dc <= 1; dc++) {
+                const rr = center.r + dr;
+                const cc = center.c + dc;
+                if (isInside(rr, cc) && state.cells[rr][cc]) set.add(rr + "," + cc);
+              }
+            }
+          }
+
+          if (group.length >= 5) {
+            special = true;
+            for (let i = 0; i < SIZE; i++) {
+              if (state.cells[center.r][i]) set.add(center.r + "," + i);
+              if (state.cells[i][center.c]) set.add(i + "," + center.c);
+            }
+          }
+        });
+
+        return { set, special, biggest };
+      }
+
+      async function resolveBoard() {
+        let combo = 0;
+
+        while (state.started) {
+          const matchData = findMatches();
+          if (!matchData.positions.size) break;
+
+          combo++;
+          state.comboNow = combo;
+          state.maxCombo = Math.max(state.maxCombo, combo);
+          const expanded = expandSpecialMatches(matchData);
+          const positions = Array.from(expanded.set).map((key) => {
+            const parts = key.split(",").map(Number);
+            return { r: parts[0], c: parts[1] };
+          });
+
+          const base = positions.length * 45;
+          const groupBonus = matchData.groups.reduce((total, group) => total + Math.max(0, group.length - 3) * 120, 0);
+          const gained = Math.round((base + groupBonus) * (1 + (combo - 1) * .42));
+          state.score += gained;
+
+          updateStats();
+          playSound(expanded.biggest >= 5 ? "mega" : expanded.special ? "special" : "match", combo);
+          showFloatingScore("+" + gained, expanded.biggest >= 5 ? "QUADRILHA!" : combo > 1 ? "COMBO x" + combo : "");
+          setComment(expanded.biggest >= 5 ? "A quadrilha limpou linha e coluna!" : comments[Math.floor(Math.random() * comments.length)]);
+          burstConfetti(expanded.biggest >= 5 ? 34 : expanded.special ? 22 : 12);
+
+          positions.forEach((pos) => {
+            const tile = state.cells[pos.r] && state.cells[pos.r][pos.c];
+            const node = tile ? state.nodes.get(tile.id) : null;
+            if (node) node.classList.add("matched");
+          });
+
+          await delay(380);
+
+          positions.forEach((pos) => {
+            const tile = state.cells[pos.r] && state.cells[pos.r][pos.c];
+            if (!tile) return;
+            const node = state.nodes.get(tile.id);
+            if (node) node.remove();
+            state.nodes.delete(tile.id);
+            state.cells[pos.r][pos.c] = null;
+          });
+
+          dropAndRefill();
+          syncBoard();
+          await delay(330);
+        }
+
+        state.comboNow = 1;
+        updateStats();
+
+        if (state.started && !hasPossibleMove()) {
+          setComment("Sem movimentos? A quadrilha misturou o salão!");
+          showToast("Tabuleiro misturado!");
+          playSound("shuffle");
+          shuffleBoard(true);
+          syncBoard();
+        }
+      }
+
+      function dropAndRefill() {
+        for (let c = 0; c < SIZE; c++) {
+          let empty = 0;
+          for (let r = SIZE - 1; r >= 0; r--) {
+            if (!state.cells[r][c]) {
+              empty++;
+            } else if (empty > 0) {
+              const tile = state.cells[r][c];
+              state.cells[r + empty][c] = tile;
+              tile.r = r + empty;
+              tile.c = c;
+              state.cells[r][c] = null;
+            }
+          }
+
+          for (let r = 0; r < empty; r++) {
+            const tile = newTile();
+            tile.r = r;
+            tile.c = c;
+            tile.spawnFrom = r - empty - 1;
+            state.cells[r][c] = tile;
+          }
+        }
+      }
+
+      function hasPossibleMove() {
+        for (let r = 0; r < SIZE; r++) {
+          for (let c = 0; c < SIZE; c++) {
+            const here = { r, c };
+            const candidates = [{ r: r + 1, c }, { r, c: c + 1 }];
+            for (const next of candidates) {
+              if (!isInside(next.r, next.c)) continue;
+              swapCells(here, next);
+              const has = findMatches().positions.size > 0;
+              swapCells(here, next);
+              if (has) return true;
+            }
+          }
+        }
+        return false;
+      }
+
+      function shuffleBoard(forceTypes) {
+        let attempts = 0;
+        do {
+          const allTiles = [];
+          for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+              const tile = state.cells[r][c];
+              if (tile) allTiles.push(tile);
+            }
+          }
+
+          if (forceTypes) {
+            allTiles.forEach((tile) => {
+              tile.type = randomPieceIndex();
+            });
+          } else {
+            const types = allTiles.map((tile) => tile.type).sort(() => Math.random() - .5);
+            allTiles.forEach((tile, index) => {
+              tile.type = types[index];
+            });
+          }
+          attempts++;
+        } while ((findMatches().positions.size > 0 || !hasPossibleMove()) && attempts < 80);
+      }
+
+      function updateStats() {
+        els.score.textContent = String(state.score);
+        els.nick.textContent = state.nick || "---";
+        els.time.textContent = Math.max(0, state.timeLeft) + "s";
+        els.combo.textContent = "x" + state.comboNow;
+        const percent = Math.max(0, Math.min(100, (state.timeLeft / GAME_SECONDS) * 100));
+        els.timeFill.style.width = percent + "%";
+      }
+
+      function setComment(text) {
+        els.comment.textContent = text;
+      }
+
+      function showFloatingScore(main, sub) {
+        const boardBox = els.board.getBoundingClientRect();
+        const modalBox = $(".fj-modal-shell").getBoundingClientRect();
+        const node = document.createElement("div");
+        node.className = "fj-float-score";
+        node.textContent = sub ? main + " " + sub : main;
+        node.style.left = (boardBox.left - modalBox.left + boardBox.width / 2) + "px";
+        node.style.top = (boardBox.top - modalBox.top + boardBox.height / 2) + "px";
+        $(".fj-modal-shell").appendChild(node);
+        setTimeout(() => node.remove(), 950);
+      }
+
+      function showToast(text) {
+        const node = document.createElement("div");
+        node.className = "fj-toast";
+        node.textContent = text;
+        els.toastLayer.appendChild(node);
+        setTimeout(() => node.remove(), 1000);
+      }
+
+      function burstConfetti(amount) {
+        const colors = ["#ffdf42", "#ff5a1f", "#d72638", "#119847", "#1667ff", "#fff3c7", "#7b2cff"];
+        for (let i = 0; i < amount; i++) {
+          const c = document.createElement("i");
+          c.className = "fj-confetti";
+          c.style.left = (Math.random() * 100) + "%";
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.setProperty("--duration", (900 + Math.random() * 1100) + "ms");
+          c.style.setProperty("--drift", (-90 + Math.random() * 180) + "px");
+          c.style.transform = "rotate(" + (Math.random() * 180) + "deg)";
+          els.confettiLayer.appendChild(c);
+          setTimeout(() => c.remove(), 2200);
+        }
+      }
+
+      function switchScreen(name) {
+        els.welcome.hidden = name !== "welcome";
+        els.game.hidden = name !== "game";
+        els.over.hidden = name !== "over";
+      }
+
+      function openModal() {
+        els.modal.hidden = false;
+        switchScreen("welcome");
+        const savedNick = safeLocalGet(STORAGE_NICK, "");
+        els.nickInput.value = savedNick;
+        setTimeout(() => els.nickInput.focus(), 80);
+        playSound("open");
+      }
+
+      function closeModal() {
+        if (state.started) {
+          endGame("Partida encerrada. Pontuação enviada automaticamente.");
+          return;
+        }
+        els.modal.hidden = true;
+        stopMusic();
+      }
+
+      function sanitizeNick(value) {
+        return value.trim().replace(/[<>]/g, "").replace(/\s+/g, " ").slice(0, 24);
+      }
+
+      function startGame() {
+        const nick = sanitizeNick(els.nickInput.value);
+        if (!nick) {
+          showToast("Digite seu nick para entrar no arraiá!");
+          playSound("bad");
+          els.nickInput.focus();
+          return;
+        }
+
+        state.nick = nick;
+        safeLocalSet(STORAGE_NICK, nick);
+        state.score = 0;
+        state.timeLeft = GAME_SECONDS;
+        state.moves = 0;
+        state.comboNow = 1;
+        state.maxCombo = 1;
+        state.selected = null;
+        state.locked = false;
+        state.started = true;
+        state.submitted = false;
+        state.idCounter = 1;
+
+        makeBoard();
+        switchScreen("game");
+        setComment("Valendo! Arraste uma peça para trocar com a vizinha.");
+        updateStats();
+        syncBoard();
+        burstConfetti(22);
+        unlockAudio();
+        startMusic();
+        playSound("start");
+
+        clearInterval(state.timer);
+        state.timer = setInterval(() => {
+          state.timeLeft--;
+          updateStats();
+
+          if (state.timeLeft <= 10 && state.timeLeft > 0) {
+            playSound("tick");
+            if (state.timeLeft === 10) setComment("Tá acabando! Corre que a fogueira vai apagar!");
+          }
+
+          if (state.timeLeft <= 0) {
+            endGame("O relógio do arraiá zerou. Seu score foi enviado automaticamente.");
+          }
+        }, 1000);
+      }
+
+      function endGame(reason) {
+        if (!state.started && state.submitted) return;
+
+        state.started = false;
+        state.locked = true;
+        state.drag = null;
+        state.selected = null;
+        clearInterval(state.timer);
+        state.timer = null;
+        stopMusic();
+
+        const oldBest = Number(safeLocalGet(STORAGE_BEST, "0")) || 0;
+        const best = Math.max(oldBest, state.score);
+        safeLocalSet(STORAGE_BEST, String(best));
+
+        els.finalScore.textContent = String(state.score);
+        els.finalNick.textContent = state.nick || "---";
+        els.finalCombo.textContent = "x" + state.maxCombo;
+        els.bestScore.textContent = String(best);
+        els.gameOverReason.textContent = reason || "Partida finalizada.";
+        els.gameOverTitle.textContent = state.score >= 3500 ? "Arraiá lendário!" : state.score >= 1800 ? "Mandou bem demais!" : "Fim da quadrilha!";
+        els.submitStatus.textContent = "Enviando pontuação...";
+        switchScreen("over");
+        burstConfetti(state.score >= 1800 ? 60 : 28);
+        playSound("gameover");
+        submitScore();
+      }
+
+      function submitScore() {
+        if (state.submitted) return;
+        state.submitted = true;
+
+        els.hiddenNick.value = state.nick || "Sem nick";
+        els.hiddenScore.value = String(state.score);
+
+        try {
+          els.form.submit();
+          els.submitStatus.textContent = "Pontuação enviada para o formulário.";
+        } catch (error) {
+          els.submitStatus.textContent = "Não foi possível enviar automaticamente. Confira o endpoint.";
+        }
+      }
+
+      function unlockAudio() {
+        if (!state.sound) return;
+        if (!state.audio) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          state.audio = new AudioContext();
+        }
+        if (state.audio.state === "suspended") state.audio.resume();
+      }
+
+      function tone(freq, duration, type, gainValue, when) {
+        if (!state.sound) return;
+        unlockAudio();
+        const ctx = state.audio;
+        if (!ctx) return;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const start = ctx.currentTime + (when || 0);
+        osc.type = type || "sine";
+        osc.frequency.setValueAtTime(freq, start);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(40, freq * .72), start + duration);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(gainValue || .05, start + .012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + duration + .03);
+      }
+
+      function noise(duration, gainValue) {
+        if (!state.sound) return;
+        unlockAudio();
+        const ctx = state.audio;
+        if (!ctx) return;
+
+        const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+        const source = ctx.createBufferSource();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+        filter.type = "bandpass";
+        filter.frequency.value = 900 + Math.random() * 1400;
+        gain.gain.setValueAtTime(gainValue || .035, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+        source.buffer = buffer;
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        source.start();
+        source.stop(ctx.currentTime + duration);
+      }
+
+      function playSound(kind, combo) {
+        if (!state.sound) return;
+        const scale = [392, 440, 494, 587, 659, 784];
+        const c = combo || 1;
+
+        if (kind === "open") {
+          tone(392, .08, "triangle", .025);
+          tone(587, .10, "triangle", .025, .08);
+        } else if (kind === "select") {
+          tone(660, .045, "sine", .024);
+        } else if (kind === "swap") {
+          tone(520, .06, "square", .025);
+          tone(650, .06, "square", .020, .055);
+        } else if (kind === "bad") {
+          tone(170, .16, "sawtooth", .035);
+          noise(.08, .018);
+        } else if (kind === "match") {
+          tone(scale[c % scale.length], .09, "triangle", .045);
+          tone(scale[(c + 2) % scale.length], .12, "triangle", .035, .055);
+          noise(.08, .018);
+        } else if (kind === "special") {
+          tone(392, .08, "triangle", .045);
+          tone(587, .10, "triangle", .045, .06);
+          tone(784, .16, "triangle", .04, .13);
+          noise(.18, .035);
+        } else if (kind === "mega") {
+          tone(294, .12, "sawtooth", .045);
+          tone(588, .16, "triangle", .05, .08);
+          tone(880, .23, "triangle", .042, .18);
+          noise(.30, .05);
+        } else if (kind === "shuffle") {
+          for (let i = 0; i < 5; i++) tone(260 + i * 70, .05, "square", .020, i * .045);
+        } else if (kind === "tick") {
+          tone(860, .04, "sine", .025);
+        } else if (kind === "start") {
+          [392, 494, 587, 784].forEach((f, i) => tone(f, .11, "triangle", .04, i * .075));
+          noise(.12, .018);
+        } else if (kind === "gameover") {
+          [784, 659, 587, 440, 330].forEach((f, i) => tone(f, .16, "triangle", .035, i * .12));
+          noise(.32, .035);
+        }
+      }
+
+      function startMusic() {
+        if (!state.sound) return;
+        stopMusic();
+        unlockAudio();
+        let beat = 0;
+        state.musicTimer = setInterval(() => {
+          if (!state.sound || !state.started) return;
+          const bass = beat % 4 === 0 ? 196 : 246;
+          tone(bass, .055, "square", .012);
+          if (beat % 2 === 0) tone(392 + (beat % 8) * 22, .045, "triangle", .012, .055);
+          if (beat % 4 === 2) noise(.035, .007);
+          beat++;
+        }, 210);
+      }
+
+      function stopMusic() {
+        if (state.musicTimer) {
+          clearInterval(state.musicTimer);
+          state.musicTimer = null;
+        }
+      }
+
+      function renderPiecesLegend() {
+        els.pieceList.innerHTML = pieces.map((piece) => '<div class="fj-piece-chip" title="' + piece.label + '">' + piece.svg + '</div>').join("");
+        els.mascotArt.innerHTML = art.corn;
+      }
+
+      els.launcher.addEventListener("click", openModal);
+      els.close.addEventListener("click", closeModal);
+      els.start.addEventListener("click", startGame);
+
+      els.nickInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") startGame();
+      });
+
+      els.soundToggle.addEventListener("click", () => {
+        state.sound = !state.sound;
+        els.soundToggle.textContent = state.sound ? "Som: ligado" : "Som: desligado";
+        if (state.sound && state.started) {
+          unlockAudio();
+          startMusic();
+          playSound("open");
+        } else {
+          stopMusic();
+        }
+      });
+
+      els.shuffle.addEventListener("click", () => {
+        if (state.locked || !state.started) return;
+        state.score = Math.max(0, state.score - 75);
+        shuffleBoard(true);
+        syncBoard();
+        updateStats();
+        showToast("-75 pontos para misturar");
+        setComment("Tabuleiro misturado no ritmo da quadrilha!");
+        playSound("shuffle");
+      });
+
+      els.giveUp.addEventListener("click", () => {
+        if (state.started) endGame("Você encerrou a partida. Pontuação enviada automaticamente.");
+      });
+
+      els.playAgain.addEventListener("click", () => {
+        switchScreen("welcome");
+        els.nickInput.value = state.nick || safeLocalGet(STORAGE_NICK, "");
+        setTimeout(() => els.start.focus(), 80);
+      });
+
+      els.closeAfterGame.addEventListener("click", () => {
+        els.modal.hidden = true;
+        stopMusic();
+      });
+
+      els.modal.addEventListener("click", (event) => {
+        if (event.target === els.modal && !state.started) {
+          els.modal.hidden = true;
+          stopMusic();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !els.modal.hidden) closeModal();
+      });
+
+      window.addEventListener("resize", () => {
+        if (!els.modal.hidden && state.started) syncBoard();
+      });
+
+      renderPiecesLegend();
+    })();
+  </script>
+</body>
+</html>
